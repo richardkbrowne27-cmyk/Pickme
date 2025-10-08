@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Pick Me ✨ — Enhanced</title>
+<style>
+  :root{
+    --bg:#060606;--fg:#f9fafb;--accent:#ce1126;--accent2:#f4f4f4;--shadow:0 20px 35px rgba(0,0,0,.45);
+    --surface:linear-gradient(135deg, rgba(18,18,18,.95), rgba(32,32,32,.92));
+    --stripe:linear-gradient(135deg, rgba(206,17,38,.95) 35%, rgba(255,255,255,.88) 36%, rgba(8,8,8,.9) 55%);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;background:var(--bg);color:var(--fg);
+    font:16px/1.5 system-ui,Segoe UI,Roboto;
+    display:grid;place-items:center;overflow:hidden;
+  }
+  body::before{
+    content:"";position:fixed;inset:-20vh;pointer-events:none;
+    background:var(--stripe);transform:rotate(-8deg) scale(1.3);
+    opacity:.45;filter:blur(12px);
+  }
+  .card{
+    padding:1.4rem 1.2rem 1.8rem;border-radius:18px;background:var(--surface);
+    border:1px solid rgba(244,244,244,.12);
+    box-shadow:var(--shadow);text-align:center;width:min(720px,92vw);
+    position:relative;overflow:hidden;
+  }
+  .card::before{
+    content:"";position:absolute;inset:0;pointer-events:none;opacity:.32;
+    background:linear-gradient(135deg, rgba(206,17,38,.4), transparent 55%);
+  }
+  h1{margin:.2rem 0 1rem}
+  .hint{opacity:.85}
+  .links{margin-top:.8rem;display:flex;gap:.6rem;flex-wrap:wrap;justify-content:center}
+  a{color:var(--accent2);text-decoration:none;border:1px solid rgba(244,244,244,.2);padding:.45rem .7rem;border-radius:10px;cursor:pointer;background:rgba(255,255,255,.04);transition:.25s ease}
+  a:hover{background:rgba(206,17,38,.3);border-color:rgba(206,17,38,.55);color:#fff}
+  .inputs{display:grid;gap:1rem;margin-top:1.2rem;text-align:left}
+  .section{background:rgba(12,12,12,.7);border-radius:14px;padding:1rem;border:1px solid rgba(244,244,244,.12)}
+  .section h2{margin:.2rem 0 1rem;font-size:1rem;letter-spacing:.02em;text-transform:uppercase;color:var(--accent)}
+  .drop{
+    position:relative;border:1.6px dashed rgba(244,244,244,.35);border-radius:14px;padding:1.3rem;display:grid;place-items:center;
+    text-align:center;background:rgba(255,255,255,.04);transition:border .25s ease,background .25s ease
+  }
+  .drop.dragover{border-color:var(--accent);background:rgba(206,17,38,.22)}
+  .drop input{position:absolute;inset:0;opacity:0;cursor:pointer}
+  .resume-meta{margin-top:.8rem;display:grid;gap:.25rem;font-size:.9rem;opacity:.88}
+  .chips{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.6rem}
+  .chip{background:rgba(206,17,38,.22);border-radius:999px;padding:.35rem .75rem;font-size:.85rem;border:1px solid rgba(206,17,38,.45)}
+  .chip button{border:none;background:none;color:inherit;margin-left:.4rem;font-weight:700;cursor:pointer;font-size:.85rem}
+  .job-form{display:flex;gap:.6rem;flex-wrap:wrap}
+  .job-form input{flex:1 1 200px;padding:.55rem .7rem;border-radius:10px;border:1px solid rgba(244,244,244,.18);background:rgba(255,255,255,.03);color:var(--fg)}
+  .job-form button{margin:0}
+  .job-type{display:flex;gap:.8rem;flex-wrap:wrap}
+  .job-type label{display:flex;align-items:center;gap:.45rem;background:rgba(255,255,255,.04);border-radius:12px;padding:.55rem .8rem;border:1px solid rgba(244,244,244,.16);cursor:pointer;transition:.25s ease}
+  .job-type label:hover{border-color:rgba(206,17,38,.55)}
+  .job-type input{accent-color:var(--accent)}
+  .qa-list{display:grid;gap:.6rem}
+  .qa-list label{display:grid;gap:.3rem;font-size:.9rem}
+  .qa-list input,.qa-list textarea,.qa-list select{padding:.55rem .7rem;border-radius:10px;border:1px solid rgba(244,244,244,.18);background:rgba(255,255,255,.03);color:var(--fg);resize:vertical;min-height:42px}
+  .plan{margin:1.4rem 0 0;background:rgba(12,12,12,.7);border-radius:14px;padding:1rem;border:1px solid rgba(244,244,244,.12);text-align:left}
+  .plan h2{margin:.2rem 0 1rem;font-size:1.1rem;letter-spacing:.02em;text-transform:uppercase;color:var(--accent)}
+  .plan ol{margin:0;padding-left:1.2rem;display:grid;gap:.6rem;font-size:.98rem}
+  button{
+    margin-top:1rem;padding:.85rem 1.1rem;font-weight:700;border:none;border-radius:12px;
+    background:linear-gradient(120deg,var(--accent),#5b000d,var(--accent));color:#fdfdfd;cursor:pointer;box-shadow:0 12px 25px rgba(0,0,0,.35);
+    border:1px solid rgba(0,0,0,.6);text-transform:uppercase;letter-spacing:.05em
+  }
+  button:hover{filter:brightness(1.05)}
+  .type{margin:.6rem auto 0;font-size:1.15rem;border-right:2px solid var(--accent2);white-space:nowrap;overflow:hidden;width:0;
+        animation:typing 1.8s steps(32,end) forwards, caret .9s steps(1,end) infinite}
+  @keyframes typing{to{width:100%}} @keyframes caret{50%{border-color:transparent}}
+  .toast{position:fixed;top:18px;left:50%;transform:translate(-50%,-20px) scale(.98);background:rgba(12,12,12,.88);
+         padding:.6rem 1rem;border-radius:10px;opacity:0;transition:.35s;border:1px solid rgba(255,255,255,.15);color:var(--accent2);
+         box-shadow:0 12px 28px rgba(0,0,0,.4)}
+  .toast.show{opacity:1;transform:translate(-50%,0) scale(1)}
+  canvas#fx{position:fixed;inset:0;pointer-events:none}
+</style>
+</head>
+<body>
+<canvas id="fx"></canvas>
+
+<div class="card">
+  <h1>Ready to launch the <span style="color:var(--accent)">Hiring Cafe bot</span></h1>
+  <p class="hint">Upload your resume, set targeting, and we’ll orchestrate the Hiring Cafe auto-applier for accountant-family roles.</p>
+
+  <div id="line" class="type" aria-label="typed line"></div>
+  <div class="links">
+    <a href="https://hiring.cafe" data-msg="Opening Hiring Cafe" data-confetti="true">Hiring Cafe</a>
+    <a href="https://www.linkedin.com/jobs/search/?keywords=accountant" data-msg="Scanning LinkedIn job feed">LinkedIn Search</a>
+    <a href="https://docs.google.com/document/d/1eResumeTemplate" data-msg="Update your master resume">Resume Template</a>
+  </div>
+
+  <div class="inputs">
+    <section class="section" id="resumeSection">
+      <h2>1. Sync Resume</h2>
+      <div class="drop" id="dropZone" role="button" tabindex="0" aria-label="Upload resume">
+        <input type="file" id="resumeInput" accept=".pdf,.doc,.docx,.rtf,.txt" />
+        <div>
+          <strong>Drop or upload</strong> your latest resume file.
+          <p class="hint">We’ll parse contact details and experience to reuse during applications.</p>
+        </div>
+      </div>
+      <div class="resume-meta" id="resumeMeta" hidden>
+        <span id="resumeName"></span>
+        <span id="resumeSize"></span>
+        <span id="resumeUpdated"></span>
+      </div>
+    </section>
+
+    <section class="section" id="jobsSection">
+      <h2>2. Target Roles</h2>
+      <form class="job-form" id="jobForm">
+        <input type="text" id="jobInput" placeholder="e.g. Senior Accountant" aria-label="Job title" />
+        <button type="submit">Add Role</button>
+      </form>
+      <div class="chips" id="jobChips" aria-live="polite"></div>
+    </section>
+
+    <section class="section" id="flowSection">
+      <h2>3. Application Paths</h2>
+      <div class="job-type" id="jobTypes">
+        <label><input type="checkbox" value="quick" checked />Quick Apply portals</label>
+        <label><input type="checkbox" value="external" />Employer websites</label>
+      </div>
+      <p class="hint" style="margin-top:.6rem">We’ll route each job based on availability—quick apply for instant submissions, or open the employer portal and sync answers.</p>
+    </section>
+
+    <section class="section" id="qaSection">
+      <h2>4. Pre-Answer Screening</h2>
+      <div class="qa-list" id="qaList"></div>
+    </section>
+  </div>
+
+  <div class="plan" aria-live="polite">
+    <h2>Automation Blueprint</h2>
+    <ol id="planSteps"></ol>
+  </div>
+
+  <button id="go">Generate Bot Gameplan</button>
+  <button id="launch" style="margin-left:.6rem;background:linear-gradient(120deg,#fff,#ce1126,#000);color:#000">Launch Automation</button>
+</div>
+
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(() => {
+  const toast = document.getElementById('toast');
+  const line  = document.getElementById('line');
+  const steps = document.getElementById('planSteps');
+  const cv    = document.getElementById('fx');
+  const ctx   = cv.getContext('2d');
+
+  const defaultPlan = [
+    'Upload resume to refresh Hiring Cafe profile data.',
+    'Monitor new Accountant-family roles every 30 minutes with saved searches.',
+    'Auto-fill applicant info using stored credentials and answer pre-screen questions.',
+    'Log each submission with company, role, and status for rapid follow-up.',
+    'Trigger notifications to your email & Slack when interviews are requested.'
+  ];
+
+  const qaQuestions = [
+    { id: 'workAuth', label: 'Are you legally authorized to work in the U.S.?', type: 'select', options: ['Yes', 'No'], value: 'Yes' },
+    { id: 'sponsorship', label: 'Will you now or in the future require sponsorship?', type: 'select', options: ['No', 'Yes'], value: 'No' },
+    { id: 'experience', label: 'Years of accounting experience', type: 'select', options: ['1-2', '3-5', '6-8', '9+'], value: '6-8' },
+    { id: 'software', label: 'Core finance / ERP platforms proficiency', type: 'text', value: 'NetSuite, QuickBooks, SAP' },
+    { id: 'remote', label: 'Remote / hybrid preference', type: 'select', options: ['Remote', 'Hybrid', 'On-site'], value: 'Hybrid' },
+    { id: 'salary', label: 'Target salary expectations (USD)', type: 'text', value: '$95,000 - $110,000 annually' },
+    { id: 'notice', label: 'Notice period', type: 'text', value: '2 weeks' }
+  ];
+
+  const resumeInput = document.getElementById('resumeInput');
+  const dropZone = document.getElementById('dropZone');
+  const resumeMeta = document.getElementById('resumeMeta');
+  const resumeName = document.getElementById('resumeName');
+  const resumeSize = document.getElementById('resumeSize');
+  const resumeUpdated = document.getElementById('resumeUpdated');
+  const jobForm = document.getElementById('jobForm');
+  const jobInput = document.getElementById('jobInput');
+  const jobChips = document.getElementById('jobChips');
+  const jobTypesWrap = document.getElementById('jobTypes');
+  const qaList = document.getElementById('qaList');
+  const launchBtn = document.getElementById('launch');
+
+  const state = {
+    resume: null,
+    roles: ['Accountant', 'Staff Accountant', 'Senior Accountant', 'Treasury Analyst'],
+    pathways: new Set(['quick']),
+    qa: {}
+  };
+
+  function bytesToSize(bytes){
+    if(!bytes) return '0 B';
+    const sizes=['B','KB','MB','GB'];
+    const i=Math.floor(Math.log(bytes)/Math.log(1024));
+    return `${(bytes/Math.pow(1024,i)).toFixed(i?1:0)} ${sizes[i]}`;
+  }
+
+  function displayResume(file){
+    if(!file) return;
+    state.resume = file;
+    resumeName.textContent = `File: ${file.name}`;
+    resumeSize.textContent = `Size: ${bytesToSize(file.size)}`;
+    resumeUpdated.textContent = `Last updated: ${new Date().toLocaleString()}`;
+    resumeMeta.hidden = false;
+    showToast('📄 Resume synced successfully');
+    dropZone.classList.remove('dragover');
+    updatePlan();
+  }
+
+  function handleFiles(files){
+    if(files && files[0]) displayResume(files[0]);
+  }
+
+  dropZone.addEventListener('dragover', (e)=>{
+    e.preventDefault(); dropZone.classList.add('dragover');
+  });
+  dropZone.addEventListener('dragleave', ()=>dropZone.classList.remove('dragover'));
+  dropZone.addEventListener('drop', (e)=>{
+    e.preventDefault(); dropZone.classList.remove('dragover');
+    handleFiles(e.dataTransfer.files);
+  });
+  dropZone.addEventListener('keydown', (e)=>{
+    if(e.key==='Enter' || e.key===' '){
+      resumeInput.click();
+    }
+  });
+  resumeInput.addEventListener('change', ()=>handleFiles(resumeInput.files));
+
+  function renderRoles(){
+    jobChips.innerHTML = '';
+    state.roles.forEach((role,index)=>{
+      const chip = document.createElement('span');
+      chip.className='chip';
+      chip.textContent = role;
+      const btn = document.createElement('button');
+      btn.type='button';
+      btn.textContent='×';
+      btn.setAttribute('aria-label', `Remove ${role}`);
+      btn.addEventListener('click', ()=>{
+        state.roles.splice(index,1);
+        renderRoles();
+        updatePlan();
+      });
+      chip.appendChild(btn);
+      jobChips.appendChild(chip);
+    });
+  }
+
+  jobForm.addEventListener('submit',(e)=>{
+    e.preventDefault();
+    const value = jobInput.value.trim();
+    if(!value) return;
+    const exists = state.roles.some(role => role.toLowerCase() === value.toLowerCase());
+    if(exists){
+      showToast(`⚠️ ${value} already tracked`);
+      jobInput.value='';
+      return;
+    }
+    state.roles.push(value);
+    jobInput.value='';
+    renderRoles();
+    showToast(`🎯 Added target role: ${value}`);
+    updatePlan();
+  });
+
+  jobTypesWrap.querySelectorAll('input').forEach(input => {
+    if(input.checked) state.pathways.add(input.value);
+    input.addEventListener('change', ()=>{
+      if(input.checked) state.pathways.add(input.value);
+      else state.pathways.delete(input.value);
+      showToast(`⚙️ Pathways: ${Array.from(state.pathways).join(' & ') || 'none'}`);
+      updatePlan();
+    });
+  });
+
+  function renderQA(){
+    qaList.innerHTML='';
+    qaQuestions.forEach(q=>{
+      const wrapper=document.createElement('label');
+      wrapper.setAttribute('for', q.id);
+      wrapper.innerHTML=`<span>${q.label}</span>`;
+      let field;
+      if(q.type==='select'){
+        field=document.createElement('select');
+        q.options.forEach(opt=>{
+          const option=document.createElement('option');
+          option.value=opt; option.textContent=opt;
+          if(opt===q.value) option.selected=true;
+          field.appendChild(option);
+        });
+      }else if(q.type==='text'){
+        field=document.createElement('input');
+        field.type='text';
+        field.value=q.value;
+      }else{
+        field=document.createElement('textarea');
+        field.value=q.value;
+      }
+      field.id=q.id;
+      field.addEventListener('input', ()=>{
+        state.qa[q.label]=field.value;
+        updatePlan();
+      });
+      state.qa[q.label]=q.value;
+      wrapper.appendChild(field);
+      qaList.appendChild(wrapper);
+    });
+  }
+
+  function buildPlan(){
+    const plan = [...defaultPlan];
+    if(state.resume){
+      plan[0] = `Resume synced (${state.resume.name}) and parsed into Hiring Cafe profile.`;
+    }
+    if(state.roles.length){
+      plan[1] = `Monitor saved searches every 30 minutes for ${state.roles.join(', ')} roles.`;
+    }
+    if(state.pathways.has('quick') || state.pathways.has('external')){
+      const flows=[];
+      if(state.pathways.has('quick')) flows.push('Quick Apply submissions on Hiring Cafe / LinkedIn');
+      if(state.pathways.has('external')) flows.push('Employer career portals with auto-filled responses');
+      plan[2] = `Route applications through ${flows.join(' & ')} using stored credentials.`;
+    }
+    const qaEntries = Object.entries(state.qa).map(([key,val])=>`${key}: ${val}`);
+    if(qaEntries.length){
+      plan[3] = `Pre-fill screening answers (${qaEntries.slice(0,3).join('; ')}${qaEntries.length>3?'…':''}).`;
+    }
+    return plan;
+  }
+
+  function updatePlan(){
+    const plan = buildPlan();
+    steps.innerHTML='';
+    plan.forEach(item=>{
+      const li=document.createElement('li');
+      li.textContent=item;
+      steps.appendChild(li);
+    });
+  }
+
+  function fit(){
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    cv.width = innerWidth * dpr; cv.height = innerHeight * dpr;
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+  }
+  addEventListener('resize', fit, {passive:true}); fit();
+
+  let toastTimer, raf;
+  function showToast(msg, ms=1600){
+    toast.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(()=> toast.classList.remove('show'), ms);
+  }
+
+  function typeMessage(msg){
+    line.style.width = '0'; void line.offsetWidth;
+    line.textContent = msg;
+    line.style.animation = 'none'; void line.offsetWidth;
+    line.style.animation = 'typing 1.8s steps(32,end) forwards, caret .9s steps(1,end) infinite';
+  }
+
+  function confetti(n=140){
+    cancelAnimationFrame(raf);
+    const parts=[], cols=['#ce1126','#ffffff','#111111','#f4f4f4'];
+    for(let i=0;i<n;i++){
+      parts.push({x:innerWidth/2, y:innerHeight*.28,
+                  vx:(Math.random()-0.5)*12, vy:Math.random()*-10-4,
+                  g:.28+Math.random()*.2, s:5+Math.random()*6, a:1,
+                  c:cols[(Math.random()*cols.length)|0], r:Math.random()*Math.PI});
+    }
+    (function step(){
+      ctx.clearRect(0,0,cv.width,cv.height);
+      let alive = false;
+      for(const p of parts){
+        p.vy += p.g; p.x += p.vx; p.y += p.vy; p.r += .15; p.a -= .007;
+        if(p.a>0 && p.y<innerHeight+40) alive = true;
+        ctx.globalAlpha = Math.max(0,p.a);
+        ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.r);
+        ctx.fillStyle=p.c; ctx.fillRect(-p.s/2,-p.s/2,p.s,p.s*.6); ctx.restore();
+      }
+      ctx.globalAlpha = 1;
+      if(alive) raf = requestAnimationFrame(step);
+    })();
+  }
+
+  function runShow(msg, doConfetti=false){
+    typeMessage(msg);
+    if(doConfetti) confetti();
+    showToast(msg || "✨ Let's go!");
+  }
+
+  document.getElementById('go').addEventListener('click', () => {
+    updatePlan();
+    runShow('🚀 Blueprint generated — time to build!');
+  });
+
+  launchBtn.addEventListener('click', ()=>{
+    updatePlan();
+    const jobs = state.roles.join(', ');
+    const pathways = Array.from(state.pathways).join(' & ') || 'no pathways selected';
+    runShow(`🤖 Automation live for ${jobs} via ${pathways}!`, true);
+  });
+
+  document.querySelectorAll('.links a').forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const msg = link.dataset.msg;
+      const doConfetti = link.dataset.confetti === 'true';
+      const url = link.href;
+      runShow(msg, doConfetti);
+      setTimeout(() => {
+        window.open(url, link.target || '_self');
+      }, 1000);
+    });
+  });
+
+  addEventListener('paste', (e) => {
+    const txt = (e.clipboardData || window.clipboardData).getData('text') || '';
+    const hasLink = /https?:\/\/\S+/i.test(txt);
+    if (hasLink) {
+      const snippet = txt.trim().slice(0, 48) + (txt.length > 48 ? '…' : '');
+      runShow(`📋 Pasted link: ${snippet}`);
+    } else {
+      runShow("📋 Pasted text — nice!");
+    }
+  });
+
+  const introMessages = [
+    'Mapping the accountant job universe…',
+    'Queuing auto-apply workflow for Hiring Cafe…',
+    'Prepping resume tailoring engine…'
+  ];
+  runShow(introMessages[Math.floor(Math.random() * introMessages.length)]);
+  renderRoles();
+  renderQA();
+  updatePlan();
+
+})();
+</script>
+</body>
+</html>
