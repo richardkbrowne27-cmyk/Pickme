@@ -36,7 +36,8 @@ Netlify can host the page directly from this repository or from a zipped downloa
 1. Sign in to [Netlify](https://app.netlify.com/) and choose **Add new site → Deploy manually**.
 2. Drag the entire project folder (or just the `index.html` file) into the uploader.
 3. After the deploy finishes, Netlify will give you a temporary `*.netlify.app` URL. Visit it to confirm the page loads and the interactions work.
-4. (Optional) Enable HTTPS by ensuring **Domain management → HTTPS** has an active certificate once your custom domain is connected.
+4. Visit **Site configuration → Build & deploy → Build settings** and set **Build image selection** to a supported image such as **Ubuntu 20.04 (Focal)**. Netlify no longer supports the legacy **Trusty** image, so updating this now prevents deployment failures.
+5. (Optional) Enable HTTPS by ensuring **Domain management → HTTPS** has an active certificate once your custom domain is connected.
 
 ### Connecting `richardkbrowne.com`
 1. In the Netlify dashboard, open your site and go to **Domain management**.
