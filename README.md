@@ -1,13 +1,15 @@
 # Hiring Cafe Automation Bot Landing Page
 
-This repo contains a single static HTML page (`index.html`) that showcases the Hiring Cafe automation bot concept.
+This repo contains a static HTML landing page (`index.html`) that showcases the Hiring Cafe automation bot concept.
+For backwards compatibility, `Pick-me-Belay.html` now performs a zero-delay redirect to the refreshed experience so any
+existing bookmarks continue to work.
 
 ## Prerequisites
 - A modern web browser (Chrome, Edge, Firefox, Safari, etc.).
 - Optionally, a lightweight HTTP server if you prefer to avoid opening the file directly from disk.
 
 ## Quick Preview
-1. Locate the `index.html` file in the repository.
+1. Locate the `index.html` file (or the legacy `Pick-me-Belay.html`, which will redirect).
 2. Double-click the file (or right-click → **Open With**) to open it in your browser.
 3. Interact with the page:
    - Drag and drop (or click to upload) a resume file to sync it with the automation workflow.
