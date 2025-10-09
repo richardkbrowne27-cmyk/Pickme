@@ -110,3 +110,27 @@ Follow these steps to validate the interactive flow end-to-end:
 - ✅ Pasting plain text vs. a URL shows distinct toast messages.
 
 If you encounter issues, check your browser's developer console for errors and ensure no extensions are blocking pop-ups.
+
+## Troubleshooting Errors
+
+When something is not working, try the quick checks below to isolate and fix the issue:
+
+1. **Browser console diagnostics**
+   - Open the page and use `Cmd+Option+I` / `Ctrl+Shift+I` to launch DevTools.
+   - Review the **Console** tab for red error messages. Most issues will link to the exact line in `index.html` where the script stopped running.
+   - If an extension is blocking scripts (ad blockers, privacy shields, etc.), temporarily disable it or open a private/incognito window and retest.
+2. **Serve from a local server**
+   - Some browsers restrict `fetch`, `FileReader`, or drag-and-drop events when loading straight from the filesystem.
+   - Use the bundled `python3 -m http.server 8000` command (or any simple static server) so the automation flow runs under `http://localhost:8000`.
+3. **Reset the interaction state**
+   - Click the browser refresh button or press `Cmd+Shift+R` / `Ctrl+Shift+R` to force a hard reload that clears cached scripts.
+   - If the resume uploader seems frozen, delete any partially added roles, refresh, and try uploading again—this clears in-memory state.
+4. **Netlify deploy errors**
+   - Open your Netlify site → **Deploys**. Failed deploys show a red ❌; click the deploy to view the log.
+   - Common fixes include switching the build image to Ubuntu 20.04, confirming `index.html` exists at the repo root, and ensuring `netlify.toml` is present so redirects resolve correctly.
+   - After fixing the root cause, trigger **Deploy site → Clear cache and deploy site** to rebuild with a clean cache.
+5. **Domain still serving the old version**
+   - Verify DNS propagation using a tool such as `https://dnschecker.org` for `richardkbrowne.com` and `www.richardkbrowne.com`.
+   - Once DNS is correct, use Netlify → **Domain management → HTTPS** to provision/renew the certificate, then perform another hard refresh locally.
+
+If an error persists after these steps, capture a screenshot of the console message and the action you were performing. That context makes it much easier to pinpoint the fix.
