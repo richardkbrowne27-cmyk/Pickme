@@ -18,6 +18,8 @@ existing bookmarks continue to work.
    - Update pre-filled screening answers so the bot can reuse them.
    - Click **Generate Bot Gameplan** or **Launch Automation** to see the toasts, typing animation, and confetti.
 
+If you do not see the confetti or toast notifications, check that your browser is not blocking pop-ups or JavaScript execution.
+
 ## Local Server Preview (Optional)
 Serving the file over HTTP gives you a slightly more realistic environment and avoids some browsers' local file restrictions.
 
@@ -46,6 +48,21 @@ Netlify can host the page directly from this repository or from a zipped downloa
 4. Update the DNS settings with your domain registrar. Propagation can take up to 24 hours, but it often completes within minutes.
 5. Back in Netlify, click **Verify** once the DNS changes have propagated. Netlify will automatically issue an SSL certificate for the domain.
 6. Set `richardkbrowne.com` (or `www.richardkbrowne.com`) as the primary domain so all traffic redirects correctly.
+
+## Detailed Testing Walkthrough
+
+Follow these steps to validate the interactive flow end-to-end:
+
+1. **Open the page** using the quick preview steps above or by serving it locally.
+2. **Upload a resume** by dragging a PDF or DOCX onto the upload drop zone. You should see the filename appear in the activity feed.
+3. **Target roles** by typing two or three sample titles (e.g., *Staff Accountant*, *Treasury Analyst*). Each entry should become a removable chip and the blueprint summary should mention the chosen roles.
+4. **Configure pathways:**
+   - Toggle **Quick Apply** on and off and note the change in the automation steps (the plan should reference streamlined application handling when enabled).
+   - Toggle **Employer website** and confirm the plan references navigating to external career portals when it is active.
+5. **Screening answers** – Edit the pre-filled answers (e.g., availability, work authorization) and click **Save answers**. The saved confirmation toast and updated summary confirm the inputs were captured.
+6. **Run the bot simulation** by pressing **Generate Bot Gameplan** followed by **Launch Automation**. Watch for the typing indicator, toasts, and confetti celebration to ensure the scripted reactions still fire.
+7. **Resource validation** – Click each resource link in the footer. They should briefly show a toast/confetti before opening in a new tab.
+8. **Clipboard handling** – Paste plain text into the notes field to see the friendly toast, then paste a URL to confirm the link-specific toast variant appears.
 
 ## Testing Checklist
 - ✅ Resume upload surface accepts drag-and-drop and file picker input.
