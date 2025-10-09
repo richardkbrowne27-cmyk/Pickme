@@ -43,6 +43,30 @@ Netlify can host the page directly from this repository or from a zipped downloa
 
 > **Tip:** The included `netlify.toml` file forces all traffic (including legacy `Pick-me-Belay.html` hits) to render `index.html` so the refreshed bot experience is always served.
 
+### Resolving GitHub merge conflicts
+
+If GitHub shows the "This branch has conflicts" banner (as in the screenshot that flags `Pick-me-Belay.html` and `README.md`), the deploy preview and redirect checks will keep failing until the conflicts are resolved locally. Use the following flow:
+
+1. Ensure you have the latest default branch locally:
+   ```bash
+   git checkout main
+   git pull origin main
+   ```
+2. Switch back to your working branch and merge in the latest default branch so you can address the conflicts on your machine:
+   ```bash
+   git checkout work
+   git merge main
+   ```
+3. Git will pause at the conflicting files. Open each file, remove the `<<<<<<<`, `=======`, and `>>>>>>>` markers, and keep the desired content (the redirect shim plus the updated README guidance).
+4. After editing, stage and commit the resolution:
+   ```bash
+   git add Pick-me-Belay.html README.md
+   git commit -m "Resolve merge conflicts"
+   git push origin work
+   ```
+
+Once GitHub sees a clean branch, the Netlify checks (Header rules, Deploy Preview, Pages changed, Redirect rules) will re-run automatically and should pass.
+
 ### Forcing a fresh deploy
 
 If the live site still shows the legacy design after merging, trigger a clean deploy:
